@@ -1,0 +1,211 @@
+body {
+  font-family: "Montserrat", inter;
+}
+
+/* text */
+
+.text-jetbrains {
+  font-family: "JetBrains Mono";
+}
+
+.text-montserrat {
+  font-family: "Montserrat";
+}
+
+.text-inter {
+  font-family: "Inter";
+}
+/* text-end */
+
+/* Navbar CSS Start */
+
+.navbar {
+    background: #F8F9FACC;
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 900;
+} 
+
+.navbar-nav .nav-link {
+  font-family: "JetBrains Mono";
+  color: #45464D;
+  font-weight: 600;
+}
+
+.navbar-nav .nav-link.active {
+   color: #006C49 !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #006C49 !important;
+  border-bottom: 2px solid #006C49;
+}
+
+/* Mobile Offcanvas */
+.offcanvas {
+    background: #F8F9FF;
+}
+
+.offcanvas .nav-link {
+    font-size: 1.2rem;
+    padding: .75rem 0;
+}
+
+/* Navbar CSS End */
+
+/* Landing & Project CSS Start */
+
+#landing {
+    min-height: calc(100vh - 80px);
+    background-color: #FCFCFF;
+}
+
+.full-stack-web-developer {
+  font-family: "JetBrains Mono";
+  font-weight: 800;
+}
+
+#landing .row {
+    min-height: calc(100vh - 72px);
+    align-items: center;
+}
+
+#landing .project-btn:hover, .btn-live-demo:hover {
+  background: #006C49 !important;
+  color: white !important;
+  transform: scale(1.05);
+}
+
+#landing .contact-btn, .btn-github{
+  color: #006C49;
+  border: 1px solid #006C49;
+}
+
+#landing .contact-btn:hover, .btn-github:hover {
+  background-color: #006C49 !important;
+  border-color: #006C49;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Landing CSS End */
+
+/* Project CSS Start */
+
+#projects h2 {
+  font-weight: bold;
+}
+
+#projects .card-title {
+  color: #006C49;
+  font-weight: bold;
+}
+
+#projects .card-text {
+  font-family: "inter";
+  margin-top: 10px;
+}
+
+.btn-live-demo {
+  background-color: black !important;
+  color: white !important;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 220px;      /* Same height for all images */
+    object-fit: contain;  /* Crop instead of stretching */
+
+}
+
+/* Project CSS End */
+
+/* CSS Start */
+
+.custom-hr {
+    height: 3px !important;
+    background-color: #006C49;
+    border: 0;
+    opacity: 1; 
+    width: 100px;
+}
+
+#tools img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  text-align: center;
+}
+
+#tools .card-text {
+  color: #006C49 !important;
+  font-weight: 400px;
+}
+
+/* Tools CSS End */
+
+/* Contact CSS Start */
+
+#contact .container {
+  background-color: #E5EEFF;
+}
+
+/* Contact CSS End */
+
+/* Footer CSS Start */
+
+.bg-custom {
+  background-color: #006C49 !important;
+  color: white;
+}
+
+.social-img {
+  width: 40px;
+  height: 40px;
+}
+
+#footers {
+  background-color: #E5EEFF;
+}
+
+footer a {
+  text-decoration: none;
+  color: black;
+}
+
+.btn-submit:hover {
+  background: black !important;
+  color: white !important;
+  transform: scale(1.05);;
+  transform: scale(1.05);
+}
+
+/* Footer CSS End */
+
+/* STTB */
+
+#myBtn {
+  /* Hidden by default — Vue's v-show controls visibility */
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: #212529;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 18px;
+
+  /* Smooth animation */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#myBtn:hover {
+  background-color: #555;
+  transform: scale(1.1);
+}
