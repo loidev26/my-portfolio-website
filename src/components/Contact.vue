@@ -1,63 +1,61 @@
 <script setup>
-	import { ref, onMounted, onBeforeMount } from 'vue';
-	import { Notyf } from 'notyf';
-	import 'notyf/notyf.min.css';
+    import { ref, onMounted, onBeforeMount } from "vue";
+    import { Notyf } from 'notyf';
+    import 'notyf/notyf.min.css';
 
-	const notyf = new Notyf();
+    const notyf = new Notyf();
 
-	const WEB3FORMS_API_KEY = '25746edd-2888-4a62-ac1c-c0143e7ef1c7';
+    const WEB3FORMS_ACCESS_KEY = "25746edd-2888-4a62-ac1c-c0143e7ef1c7";
 
-	const subject = "New message from Portfolio Contact Form";
+    const subject = "New message from Portfolio Contact Form";
 
-	const name = ref("");
-	const email = ref("");
-	const message = ref("");
-	const isLoading = ref(false);
+    const name = ref("");
+    const email = ref("");
+    const message = ref("");
+    const isLoading =ref(false);
 
-	const submitForm = async () => {
-		
-		if(!recaptchaToken.value) {
-			notyf.error("Please verify that you are not a robot.");
-			return;
-		}
+    const submitForm = async () => {
 
-		isLoading.value = true;
-		
-		try {
+        if(!recaptchaToken.value) {
+            notyf.error("Please verify that you are not a robot.");
+            return;
+        }
 
-			const response = await fetch("https://api.web3forms.com/submit", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json"
-				},
+        isLoading.value = true;
 
-				body: JSON.stringify({
-					access_key: WEB3FORMS_API_KEY,
-					name: name.value,
-					email: email.value,
-					message: message.value,
-					subject: subject,
-					"g-recaptcha-response": recaptchaToken.value
-				})
-			})
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
+                },
+                body: JSON.stringify({
+                    access_key: WEB3FORMS_ACCESS_KEY,
+                    subject: subject,
+                    email: email.value,
+                    name: name.value,
+                    message: message.value
+                })
+            })
 
-			const result = await response.json();
+            const result = await response.json();
 
-			if (result.success) {
-				console.log(result);
-				isLoading.value = false;
-				notyf.success("Message Sent!")
-			}
-		} catch (e) {
-			console.log(e);
-			isLoading.value = false;
-			notyf.error("Failed to send message. Please try again.");
-		} finally {
-			resetRecaptcha();
-		}
-	}
-	const SITE_KEY = '6Lf_mustAAAAACYHb4GmgSDi_B6gitp30I1jCYwo';
+            if (result.success) {
+                console.log(result);
+                isLoading.value = false;
+                notyf.success("Message Sent!")
+            }
+        } catch(e) {
+            console.log(e);
+            isLoading.value = false;
+            notyf.error("Failed to send message. Please try again.")
+        } finally {
+					isLoading.value = false;
+					resetRecaptcha();
+				}
+    }
+    const SITE_KEY = '6Lf_mustAAAAACYHb4GmgSDi_B6gitp30I1jCYwo';
 
     const recaptchaContainer = ref(null);
     const recaptchaWidgetId = ref(null);
@@ -96,22 +94,20 @@
         }
     }
 
-    onMounted(() => {
-    // This code waits for the Google reCAPTCHA library to load, then renders the reCAPTCHA widget using onMounted hook.
-    // The widget is rendered with grecaptcha.render(), which requires a sitekey.
-    // Callback functions handle success and expiration events.
-    // reCAPTCHA is reset upon form submission to clear the token.
-    const interval = setInterval(() => {
-        if (window.grecaptcha && window.grecaptcha.render) {
-            renderRecaptcha();
-            clearInterval(interval);
-        }
-    }, 100);
+    let interval;
 
-        onBeforeUnmount(() => {
-            clearInterval(interval);
-        });
-    });
+		onMounted(() => {
+				interval = setInterval(() => {
+						if (window.grecaptcha && window.grecaptcha.render) {
+								renderRecaptcha();
+								clearInterval(interval);
+						}
+				}, 100);
+		});
+
+		onBeforeUnmount(() => {
+				clearInterval(interval);
+		});
 </script>
 <template>
 	<section id="contact" class="my-5 py-5">
@@ -144,7 +140,7 @@
 					</div>
 				</div>
 				<div class="col-md-12 col-lg-6">
-					<form class="w-100 p-5" @submit.prevent="submitForm">
+					<form @submit.prevent="submitForm" class="w-100 p-5">
 						<div class="d-md-flex gap-2">
 				          <div class="mb-3 flex-grow-1">
 				                <label for="name" class="form-label">Name</label>
@@ -168,28 +164,22 @@
 				        </div>
 					  
 					  	<div class="mb-3">
-						  	<label for="message" class="form-label">Message</label>
-						  	<textarea 
-									class="form-control" 
-									id="message" 
-									rows="7" 
-									placeholder="Type here your message..." v-model="message">
-								</textarea>
-						</div>
+								<label for="message" class="form-label">Message</label>
+								<textarea
+									class="form-control"
+									id="message"
+									rows="7"
+									placeholder="Type here your message..."
+									v-model="message"
+								></textarea>
+							</div>
 
-						 <!-- recaptcha checkbox -->
+						<!-- recaptcha checkbox -->
 						<div class="d-flex justify-content-end mt-2">
 								<div ref="recaptchaContainer"></div>
 						</div>
 
-						<div class="form-footer">
-						<div class="social-icons">
-								<a href="https://www.linkedin.com/in/charles-babbage-8291a6211/" id="linkedin"><i class="fab fa-linkedin"></i></a>
-								<a href="https://gitlab.com/cbabbage0991" id="gitlab"><i class="fab fa-gitlab"></i></a>
-								<a href="https://github.com/cbabbage0991" id="github"><i class="fab fa-github"></i></a>
-						</div>
-
-						<button 
+						<button
 							type="submit"
 							class="submit-btn pl-5 pr-5"
 							:disabled="isLoading">
