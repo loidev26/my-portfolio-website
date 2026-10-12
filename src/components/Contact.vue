@@ -54,7 +54,7 @@
             resetRecaptcha();
         }
     }
-    const SITE_KEY = '6Lf_mustAAAAACYHb4GmgSDi_B6gitp30I1jCYwo';
+    const SITE_KEY = '6Le0westAAAAABMbzOUB-Y72myqfkclNvKDh6LlJ';
 
     const recaptchaContainer = ref(null);
         const recaptchaWidgetId = ref(null);
@@ -120,8 +120,7 @@
 						Get In Touch
 					</h3>
 					<p>
-						Currently looking for new opportunities in full-stack engineering. Let's
-						discuss your project.
+						Currently looking for new opportunities in full-stack engineering. Let's discuss your project.
 					</p>
 					<div class="d-flex">
 						<div class="bi bi-envelope fs-1 p-2 mt-1 me-3">
