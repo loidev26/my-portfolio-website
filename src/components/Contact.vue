@@ -174,13 +174,13 @@
 						</div>
 
 						<!-- recaptcha checkbox -->
-						<div class="d-flex justify-content-end mt-2">
+						<div class="d-flex justify-content-end m-2">
 								<div ref="recaptchaContainer"></div>
 						</div>
 
 						<button
 							type="submit"
-							class="submit-btn pl-5 pr-5"
+							class="btn btn-dark w-100 btn-submit"
 							:disabled="isLoading">
 									{{ isLoading ? "Sending..." : "Send Message" }}
 						</button>
