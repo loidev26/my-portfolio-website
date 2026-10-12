@@ -5,7 +5,7 @@
 
 	const notyf = new Notyf();
 
-	const WEB3FORMS_API_KEY = 'YOUR_WEB3FORMS_API_KEY';
+	const WEB3FORMS_API_KEY = '25746edd-2888-4a62-ac1c-c0143e7ef1c7';
 
 	const subject = "New message from Portfolio Contact Form";
 
@@ -57,6 +57,61 @@
 			resetRecaptcha();
 		}
 	}
+	const SITE_KEY = '6Lf_mustAAAAACYHb4GmgSDi_B6gitp30I1jCYwo';
+
+    const recaptchaContainer = ref(null);
+    const recaptchaWidgetId = ref(null);
+    const recaptchaToken = ref('');
+
+    // Callback called by reCAPTCHA when successful
+    function onRecaptchaSuccess(token) {
+        recaptchaToken.value = token;
+    }
+
+    // Callback when expired
+    function onRecaptchaExpired() {
+        recaptchaToken.value = '';
+    }
+
+    // Function to render the reCAPTCHA widget
+    function renderRecaptcha() {
+        if (!window.grecaptcha) {
+            console.error('reCAPTCHA not loaded');
+            return;
+        }
+
+        recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
+            sitekey: SITE_KEY,
+            size: 'normal', // or 'compact'
+            callback: onRecaptchaSuccess,
+            'expired-callback': onRecaptchaExpired,
+        });
+    }
+
+    // Function to reset reCAPTCHA
+    function resetRecaptcha() {
+        if (recaptchaWidgetId.value !== null) {
+            window.grecaptcha.reset(recaptchaWidgetId.value);
+            recaptchaToken.value = '';
+        }
+    }
+
+    onMounted(() => {
+    // This code waits for the Google reCAPTCHA library to load, then renders the reCAPTCHA widget using onMounted hook.
+    // The widget is rendered with grecaptcha.render(), which requires a sitekey.
+    // Callback functions handle success and expiration events.
+    // reCAPTCHA is reset upon form submission to clear the token.
+    const interval = setInterval(() => {
+        if (window.grecaptcha && window.grecaptcha.render) {
+            renderRecaptcha();
+            clearInterval(interval);
+        }
+    }, 100);
+
+        onBeforeUnmount(() => {
+            clearInterval(interval);
+        });
+    });
 </script>
 <template>
 	<section id="contact" class="my-5 py-5">
@@ -89,24 +144,57 @@
 					</div>
 				</div>
 				<div class="col-md-12 col-lg-6">
-					<form class="w-100 p-5">
+					<form class="w-100 p-5" @submit.prevent="submitForm">
 						<div class="d-md-flex gap-2">
-				            <div class="mb-3 flex-grow-1">
+				          <div class="mb-3 flex-grow-1">
 				                <label for="name" class="form-label">Name</label>
-				                <input type="text" class="form-control" id="name" placeholder="John Doe">
+				                <input 
+													type="text" 
+													class="form-control" 
+													id="name" 
+													placeholder="John Doe"
+													v-model="name">
 				            </div>
 
 				            <div class="mb-3 flex-grow-1">
 				                <label for="email" class="form-label">Email</label>
-				                <input type="text" class="form-control" id="email" placeholder="johndoe@example.com">
+				                <input 
+													type="text" 
+													class="form-control" 
+													id="email" 
+													placeholder="johndoe@example.com"
+													v-model="email">
 				            </div>
 				        </div>
 					  
 					  	<div class="mb-3">
 						  	<label for="message" class="form-label">Message</label>
-						  	<textarea class="form-control" id="message" rows="7" placeholder="Type here your message..."></textarea>
+						  	<textarea 
+									class="form-control" 
+									id="message" 
+									rows="7" 
+									placeholder="Type here your message..." v-model="message">
+								</textarea>
 						</div>
-						<button type="submit" class="btn btn-dark w-100 btn-submit">Send Message</button>
+
+						 <!-- recaptcha checkbox -->
+						<div class="d-flex justify-content-end mt-2">
+								<div ref="recaptchaContainer"></div>
+						</div>
+
+						<div class="form-footer">
+						<div class="social-icons">
+								<a href="https://www.linkedin.com/in/charles-babbage-8291a6211/" id="linkedin"><i class="fab fa-linkedin"></i></a>
+								<a href="https://gitlab.com/cbabbage0991" id="gitlab"><i class="fab fa-gitlab"></i></a>
+								<a href="https://github.com/cbabbage0991" id="github"><i class="fab fa-github"></i></a>
+						</div>
+
+						<button 
+							type="submit"
+							class="submit-btn pl-5 pr-5"
+							:disabled="isLoading">
+									{{ isLoading ? "Sending..." : "Send Message" }}
+						</button>
 					</form>
 				</div>
 			</div>
