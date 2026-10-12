@@ -51,63 +51,64 @@
             isLoading.value = false;
             notyf.error("Failed to send message. Please try again.")
         } finally {
-					isLoading.value = false;
-					resetRecaptcha();
-				}
+            resetRecaptcha();
+        }
     }
     const SITE_KEY = '6Lf_mustAAAAACYHb4GmgSDi_B6gitp30I1jCYwo';
 
     const recaptchaContainer = ref(null);
-    const recaptchaWidgetId = ref(null);
-    const recaptchaToken = ref('');
+        const recaptchaWidgetId = ref(null);
+        const recaptchaToken = ref('');
 
-    // Callback called by reCAPTCHA when successful
-    function onRecaptchaSuccess(token) {
-        recaptchaToken.value = token;
-    }
-
-    // Callback when expired
-    function onRecaptchaExpired() {
-        recaptchaToken.value = '';
-    }
-
-    // Function to render the reCAPTCHA widget
-    function renderRecaptcha() {
-        if (!window.grecaptcha) {
-            console.error('reCAPTCHA not loaded');
-            return;
+        // Callback called by reCAPTCHA when successful
+        function onRecaptchaSuccess(token) {
+            recaptchaToken.value = token;
         }
 
-        recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
-            sitekey: SITE_KEY,
-            size: 'normal', // or 'compact'
-            callback: onRecaptchaSuccess,
-            'expired-callback': onRecaptchaExpired,
-        });
-    }
-
-    // Function to reset reCAPTCHA
-    function resetRecaptcha() {
-        if (recaptchaWidgetId.value !== null) {
-            window.grecaptcha.reset(recaptchaWidgetId.value);
+        // Callback when expired
+        function onRecaptchaExpired() {
             recaptchaToken.value = '';
         }
-    }
 
-    let interval;
+        // Function to render the reCAPTCHA widget
+        function renderRecaptcha() {
+            if (!window.grecaptcha) {
+                console.error('reCAPTCHA not loaded');
+                return;
+            }
 
-		onMounted(() => {
-				interval = setInterval(() => {
-						if (window.grecaptcha && window.grecaptcha.render) {
-								renderRecaptcha();
-								clearInterval(interval);
-						}
-				}, 100);
-		});
+            recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
+                sitekey: SITE_KEY,
+                size: 'normal', // or 'compact'
+                callback: onRecaptchaSuccess,
+                'expired-callback': onRecaptchaExpired,
+            });
+        }
 
-		onBeforeUnmount(() => {
-				clearInterval(interval);
-		});
+        // Function to reset reCAPTCHA
+        function resetRecaptcha() {
+            if (recaptchaWidgetId.value !== null) {
+                window.grecaptcha.reset(recaptchaWidgetId.value);
+                recaptchaToken.value = '';
+            }
+        }
+
+        onMounted(() => {
+        // This code waits for the Google reCAPTCHA library to load, then renders the reCAPTCHA widget using onMounted hook.
+        // The widget is rendered with grecaptcha.render(), which requires a sitekey.
+        // Callback functions handle success and expiration events.
+        // reCAPTCHA is reset upon form submission to clear the token.
+        const interval = setInterval(() => {
+            if (window.grecaptcha && window.grecaptcha.render) {
+                renderRecaptcha();
+                clearInterval(interval);
+            }
+        }, 100);
+
+            onBeforeUnmount(() => {
+                clearInterval(interval);
+            });
+        });
 </script>
 <template>
 	<section id="contact" class="my-5 py-5">
@@ -164,15 +165,14 @@
 				        </div>
 					  
 					  	<div class="mb-3">
-								<label for="message" class="form-label">Message</label>
-								<textarea
-									class="form-control"
-									id="message"
-									rows="7"
-									placeholder="Type here your message..."
-									v-model="message"
-								></textarea>
-							</div>
+						  	<label for="message" class="form-label">Message</label>
+						  	<textarea 
+									class="form-control" 
+									id="message" 
+									rows="7" 
+									placeholder="Type here your message..." v-model="message">
+								</textarea>
+						</div>
 
 						<!-- recaptcha checkbox -->
 						<div class="d-flex justify-content-end mt-2">
